@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time QR</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #time {
+            margin: 20px;
+            font-size: 18px;
+            word-break: break-all;
+        }
+
+        img {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Current Time QR</h1>
+
+<div id="time"></div>
+
+<img id="qr" width="400" height="400">
+
+<script>
+function updateQR() {
+
+    const now = new Date();
+    
+    const timestamp =
+    now.getUTCFullYear() + "-" +
+    String(now.getUTCMonth() + 1).padStart(2, '0') + "-" +
+    String(now.getUTCDate()).padStart(2, '0') + " " +
+    String(now.getUTCHours()).padStart(2, '0') + ":" +
+    String(now.getUTCMinutes()).padStart(2, '0') + ":" +
+    String(now.getUTCSeconds()).padStart(2, '0');
+    
+    const command =
+        `timedatectl set-time "${timestamp}"`;
+    
+    document.getElementById("time").textContent = command;
+
+    document.getElementById("qr").src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=" +
+        encodeURIComponent(command);
+}
+
+updateQR();
+setInterval(updateQR, 1000);
+</script>
+
+</body>
+</html>
